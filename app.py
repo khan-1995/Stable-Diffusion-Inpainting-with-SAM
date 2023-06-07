@@ -6,6 +6,7 @@ from PIL import Image
 from segment_anything import SamPredictor , sam_model_registry
 
 sam_model_checkpoint = "weights/sam_vit_h_4b8939.pth"
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model_type = "vit_h"
 
@@ -20,7 +21,7 @@ pipe = StableDiffusionInpaintPipeline.from_pretrained(
     # torch_dtype = torch.float16,
     )
 
-pipe = pipe.to(torch_device=device) # type: ignore
+pipe = pipe.to(torch_device=device)
 
 select_pixels = []
 with gr.Blocks() as demo :
@@ -42,7 +43,7 @@ with gr.Blocks() as demo :
         img = img.resize((512,512))
         mask = mask.resize((512,512))
 
-        output = pipe(prompt=prompt,image=img,mask_image=mask).images[0] # type: ignore
+        output = pipe(prompt=prompt,image=img,mask_image=mask).images[0]
         return output
     
     def generate_mask(input_image,event : gr.SelectData):
